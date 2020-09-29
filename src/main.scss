@@ -1,0 +1,321 @@
+body {
+  background-color: #f5f5f5;
+  font-family: 'Revalia', cursive;
+}
+
+.container {
+  position: relative;
+  max-width: 1400px;
+  padding: 40px 30px;
+}
+
+.logo {
+  text-align: center;
+
+  &__text {
+    font-size: 30px;
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  &__image {
+    width: 70px;
+    max-width: 100%;
+  }
+}
+
+.mode {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+
+  &:hover {
+    color: #50bbf1;
+  }
+}
+
+.durations {
+  text-align: center;
+  margin-top: 40px;
+
+  &__button {
+    background-color: transparent;
+    border: 1px solid #84d4fc;
+    border-radius: 45px;
+    font-size: 15px;
+    font-family: 'Revalia', cursive;
+    padding: 8px 20px 10px 20px;
+    margin-bottom: 25px;
+    transition: background-color 0.2s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #84d4fc;
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    .dark & {
+      color: #fefeff;
+    }
+  }
+}
+
+.timer {
+  font-size: 55px;
+  font-weight: bold;
+  color: #4a36a7;
+  display: flex;
+  justify-content: center;
+
+  .dark & {
+    color: #b6abfd;
+  }
+}
+
+.controls {
+  text-align: center;
+  margin-top: 15px;
+
+  &__button {
+    background-color: transparent;
+    width: 44px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+
+    &:focus {
+      outline: none;
+    }
+
+    &:hover {
+      transform: scale(1.1);
+    }
+
+    .dark & {
+      svg {
+        fill: #fefeff;
+      }
+    }
+  }
+}
+
+.usage {
+  text-align: center;
+  margin: 40px auto;
+
+  &__title {
+    font-size: 20px;
+    color: #50bbf1;
+    margin-bottom: 25px;
+  }
+
+  &__content {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  a {
+    text-decoration: none;
+    color: #50bbf1;
+    border-bottom: 1px solid #50bbf1;
+    padding-bottom: 1px;
+    transition: opacity 0.2s ease-in-out;
+
+    &:hover {
+      opacity: 0.6;
+    }
+  }
+
+  ul {
+    list-style-type: none;
+    margin-top: 20px;
+    padding-left: 0;
+  }
+
+  li {
+    &::after {
+      display: block;
+      content: '';
+      background-color: #50bbf1;
+      height: 1px;
+      width: 50px;
+      margin: 30px auto;
+    }
+
+    &:last-child {
+      &::after {
+        display: none;
+      }
+    }
+  }
+}
+
+.message {
+  text-align: center;
+  font-size: 22px;
+  line-height: 1.7;
+  color: #50bbf1;
+}
+
+.log {
+  width: 82%;
+  margin: 40px auto;
+  border: 1px solid #84d4fc;
+  border-radius: 10px;
+  padding: 25px 20px;
+
+  &__title {
+    text-align: center;
+    margin-top: 0;
+    font-size: 17px;
+  }
+
+  &__clear {
+    text-align: right;
+    font-size: 15px;
+    margin-top: 13px;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+
+    &:hover {
+      color: #50bbf1;
+    }
+  }
+
+  &__wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__column {
+    display: flex;
+    flex: 0 0 20%;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  &__icon {
+    width: 30px;
+    height: 30px;
+    max-width: 100%;
+    cursor: pointer;
+    filter: grayscale(100%);
+    opacity: 0.5;
+    margin: 0 5px 30px 0;
+
+    &:nth-child(even) {
+      margin-right: 0;
+    }
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.active {
+  background-color: #84d4fc;
+}
+
+.checked {
+  filter: grayscale(0%);
+  opacity: 1;
+}
+
+.dark {
+  background-color: #222;
+  color: #f5f5f5;
+}
+
+.stressed {
+  color: #50bbf1;
+}
+
+@media only screen and (min-width: 1024px) {
+  .container {
+    padding: 50px;
+  }
+
+  .logo {
+    &__text {
+      font-size: 40px;
+      margin-top: 0px;
+    }
+
+    &__image {
+      width: 130px;
+    }
+  }
+
+  .durations {
+    margin: 35px 0 10px 0;
+
+    &__button {
+      &:first-child {
+        margin-bottom: 16px;
+      }
+    }
+
+    &__breaks {
+      button {
+        &:first-child {
+          margin-right: 14px;
+        }
+      }
+    }
+  }
+
+  .timer {
+    font-size: 65px;
+  }
+
+  .controls {
+    margin-top: 15px;
+
+    &__button {
+      width: 45px;
+      margin-right: 8px;
+    }
+  }
+
+  .usage {
+    width: 500px;
+    margin: 50px auto;
+
+    &__content {
+      font-size: 17px;
+    }
+
+    li {
+      &::after {
+        height: 2px;
+        width: 60px;
+      }
+    }
+  }
+
+  .log {
+    width: 320px;
+    padding: 20px 30px;
+    margin-top: 40px;
+
+    &__icon {
+      width: 25px;
+      margin-bottom: 5px;
+    }
+
+    &__title {
+      font-size: 16px;
+    }
+
+    &__clear {
+      font-size: 13px;
+    }
+  }
+}
