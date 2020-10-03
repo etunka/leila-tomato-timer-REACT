@@ -8,6 +8,7 @@ import { Log } from './components/Log';
 import { Usage } from './components/Usage';
 import * as Icons from './icons';
 
+// dark mode/light mode
 const savedMode = localStorage.getItem('mode');
 const defaultMode = savedMode ? savedMode : 'light';
 
@@ -75,7 +76,7 @@ function App() {
           </Button>
         </div>
       </div>
-      <Log logTitle={'My tomato log'} logClear={'Clear log'} />
+      <Log />
       <Usage />
     </div>
   );
