@@ -15,10 +15,6 @@ const defaultMode = savedMode ? savedMode : 'light';
 function App() {
   const [mode, setMode] = useState(defaultMode);
 
-  function toggleMode() {
-    setMode((mode) => (mode === 'dark' ? 'light' : 'dark'));
-  }
-
   useEffect(() => {
     if (mode === 'dark') {
       document.body.classList.add('dark');
@@ -30,7 +26,11 @@ function App() {
 
   return (
     <div className='container'>
-      <span className='mode' id='mode' onClick={toggleMode}>
+      <span
+        className='mode'
+        id='mode'
+        onClick={() => setMode(mode === 'dark' ? 'light' : 'dark')}
+      >
         {mode === 'dark' ? 'Light mode' : 'Dark mode'}
       </span>
       <Logo
