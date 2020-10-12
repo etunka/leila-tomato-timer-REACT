@@ -1,19 +1,13 @@
 import React, { FC } from 'react';
 
 type Props = {
-  buttonId?: string;
   buttonClass?: string;
-  buttonData?: string;
+  onClick?: () => void;
 };
 
-export const Button: FC<Props> = ({
-  buttonId,
-  buttonClass,
-  buttonData,
-  children,
-}) => {
+export const Button: FC<Props> = ({ buttonClass, onClick, children }) => {
   return (
-    <button id={buttonId} className={buttonClass} data-setting={buttonData}>
+    <button className={buttonClass} onClick={onClick}>
       {children}
     </button>
   );

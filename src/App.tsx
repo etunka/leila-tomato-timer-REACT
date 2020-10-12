@@ -1,11 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './main.scss';
-import { Timer } from './components/Timer';
+import { TimerDisplay } from './components/TimerDisplay';
 import { Logo } from './components/Logo';
 import { Button } from './components/Button';
 import logoImageUrl from './images/tomato-logo.png';
 import { Log } from './components/Log';
 import { Usage } from './components/Usage';
+import { timerSettings } from './constant';
 import * as Icons from './icons';
 
 // dark mode/light mode
@@ -15,6 +16,40 @@ const defaultMode = savedMode ? savedMode : 'light';
 function App() {
   const [mode, setMode] = useState(defaultMode);
 
+  const [activeSetting, setActiveSetting] = useState<
+    'focus' | 'longBreak' | 'shortBreak'
+  >('focus');
+
+  const [time, setTime] = useState(timerSettings[activeSetting]);
+
+  // timer instance ref
+  const appTimer = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    // appTimer.current = setInterval(() => {
+    //   setTime((currentTime) => currentTime - 1);
+    // }, 1000);
+    // return () => {
+    //   // we make typescript happy with if
+    //   if (appTimer.current) {
+    //     clearInterval(appTimer.current);
+    //   }
+    // };
+  }, []);
+
+  // set timer display
+  useEffect(() => {
+    setTime(timerSettings[activeSetting]);
+  }, [activeSetting]);
+
+  // when time is over, clear the timer
+  useEffect(() => {
+    if (time === 0 && appTimer.current) {
+      clearInterval(appTimer.current);
+    }
+  }, [time]);
+
+  // set dark/light mode
   useEffect(() => {
     if (mode === 'dark') {
       document.body.classList.add('dark');
@@ -38,39 +73,58 @@ function App() {
         altText={'tomato logo'}
         logoText={'Leila Tomato Timer'}
       />
-      <Timer remainingTime={1200} />
+      <TimerDisplay time={time} />
       <div id='done' className='message'></div>
       <div className='controls'>
-        <Button buttonId={'pause'} buttonClass={'controls__button'}>
+        <Button
+          buttonClass={'controls__button'}
+          onClick={() => {
+            if (appTimer.current) {
+              clearInterval(appTimer.current);
+            }
+          }}
+        >
           {Icons.pause}
         </Button>
-        <Button buttonId={'play'} buttonClass={'controls__button'}>
+        <Button
+          buttonClass={'controls__button'}
+          onClick={() => {
+            appTimer.current = setInterval(() => {
+              setTime((currentTime) => currentTime - 1);
+            }, 1000);
+          }}
+        >
           {Icons.play}
         </Button>
-        <Button buttonId={'replay'} buttonClass={'controls__button'}>
+        <Button
+          buttonClass={'controls__button'}
+          onClick={() => {
+            if (appTimer.current) {
+              clearInterval(appTimer.current);
+            }
+            setTime(timerSettings[activeSetting]);
+          }}
+        >
           {Icons.replay}
         </Button>
       </div>
       <div className='durations'>
         <Button
-          buttonId={'focus'}
           buttonClass={'durations__button'}
-          buttonData={'focus'}
+          onClick={() => setActiveSetting('focus')}
         >
           Focus
         </Button>
         <div className='durations__breaks'>
           <Button
-            buttonId={'short'}
             buttonClass={'durations__button'}
-            buttonData={'shortBreak'}
+            onClick={() => setActiveSetting('shortBreak')}
           >
             Short break
           </Button>
           <Button
-            buttonId={'long'}
             buttonClass={'durations__button'}
-            buttonData={'longBreak'}
+            onClick={() => setActiveSetting('longBreak')}
           >
             Long break
           </Button>
