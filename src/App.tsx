@@ -9,20 +9,23 @@ import { Usage } from './components/Usage';
 import { timerSettings, bell, tick, messages } from './constant';
 import * as Icons from './icons';
 
-// dark mode/light mode
-const savedMode = localStorage.getItem('mode');
-const defaultMode = savedMode ? savedMode : 'light';
+// dark/light mode
+function getDefaultMode() {
+  const savedMode = localStorage.getItem('mode');
+  return savedMode ? savedMode : 'light';
+}
 
 function App() {
-  const [mode, setMode] = useState(defaultMode);
+  const [mode, setMode] = useState(getDefaultMode());
 
+  // default duration is focus
   const [activeSetting, setActiveSetting] = useState<
     'focus' | 'longBreak' | 'shortBreak'
   >('focus');
 
   const [time, setTime] = useState(timerSettings[activeSetting]);
 
-  // timer instance ref
+  // timer instance reference
   const appTimer = useRef<NodeJS.Timeout | null>(null);
 
   // set timer display
@@ -30,9 +33,10 @@ function App() {
     setTime(timerSettings[activeSetting]);
   }, [activeSetting]);
 
-  // when time is over, clear the timer
+  // when time is up, clear the timer
   useEffect(() => {
-    if (time === 0 && appTimer.current) {
+    // we make typescript happy with appTimer.current
+    if (appTimer.current && time === 0) {
       clearInterval(appTimer.current);
       bell.play();
     }
@@ -52,7 +56,6 @@ function App() {
     <div className='container'>
       <span
         className='mode'
-        id='mode'
         onClick={() => setMode(mode === 'dark' ? 'light' : 'dark')}
       >
         {mode === 'dark' ? 'Light mode' : 'Dark mode'}
@@ -63,11 +66,7 @@ function App() {
         logoText={'Leila Tomato Timer'}
       />
       <TimerDisplay time={time} />
-      {time === 0 && (
-        <div id='done' className='message'>
-          {messages[activeSetting]}
-        </div>
-      )}
+      {time === 0 && <div className='message'>{messages[activeSetting]}</div>}
       <div className='controls'>
         <Button
           buttonClass={'controls__button'}
@@ -75,7 +74,6 @@ function App() {
             if (appTimer.current) {
               clearInterval(appTimer.current);
             }
-            tick.play();
           }}
         >
           {Icons.pause}
@@ -98,7 +96,6 @@ function App() {
               clearInterval(appTimer.current);
             }
             setTime(timerSettings[activeSetting]);
-            tick.play();
           }}
         >
           {Icons.replay}
