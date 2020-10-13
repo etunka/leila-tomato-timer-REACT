@@ -7,6 +7,7 @@ import logoImageUrl from './images/tomato-logo.png';
 import { Log } from './components/Log';
 import { Usage } from './components/Usage';
 import { timerSettings } from './constant';
+import { messages } from './constant';
 import * as Icons from './icons';
 
 // dark mode/light mode
@@ -24,18 +25,6 @@ function App() {
 
   // timer instance ref
   const appTimer = useRef<NodeJS.Timeout | null>(null);
-
-  useEffect(() => {
-    // appTimer.current = setInterval(() => {
-    //   setTime((currentTime) => currentTime - 1);
-    // }, 1000);
-    // return () => {
-    //   // we make typescript happy with if
-    //   if (appTimer.current) {
-    //     clearInterval(appTimer.current);
-    //   }
-    // };
-  }, []);
 
   // set timer display
   useEffect(() => {
@@ -74,7 +63,11 @@ function App() {
         logoText={'Leila Tomato Timer'}
       />
       <TimerDisplay time={time} />
-      <div id='done' className='message'></div>
+      {time === 0 && (
+        <div id='done' className='message'>
+          {messages[activeSetting]}
+        </div>
+      )}
       <div className='controls'>
         <Button
           buttonClass={'controls__button'}
@@ -91,7 +84,7 @@ function App() {
           onClick={() => {
             appTimer.current = setInterval(() => {
               setTime((currentTime) => currentTime - 1);
-            }, 1000);
+            }, 1);
           }}
         >
           {Icons.play}

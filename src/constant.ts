@@ -4,6 +4,11 @@ export const timerSettings = {
   longBreak: 1200
 };
 
+export const messages = {
+  focus: 'Session completed!',
+  shortBreak: 'End of short break!',
+  longBreak: 'End of long break!'
+};
 
 export const defaultLog = () => [
   [false, false, false, false],
