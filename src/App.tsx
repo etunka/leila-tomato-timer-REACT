@@ -6,8 +6,7 @@ import { Button } from './components/Button';
 import logoImageUrl from './images/tomato-logo.png';
 import { Log } from './components/Log';
 import { Usage } from './components/Usage';
-import { timerSettings } from './constant';
-import { messages } from './constant';
+import { timerSettings, bell, tick, messages } from './constant';
 import * as Icons from './icons';
 
 // dark mode/light mode
@@ -35,6 +34,7 @@ function App() {
   useEffect(() => {
     if (time === 0 && appTimer.current) {
       clearInterval(appTimer.current);
+      bell.play();
     }
   }, [time]);
 
@@ -75,6 +75,7 @@ function App() {
             if (appTimer.current) {
               clearInterval(appTimer.current);
             }
+            tick.play();
           }}
         >
           {Icons.pause}
@@ -85,6 +86,7 @@ function App() {
             appTimer.current = setInterval(() => {
               setTime((currentTime) => currentTime - 1);
             }, 1);
+            tick.play();
           }}
         >
           {Icons.play}
@@ -96,6 +98,7 @@ function App() {
               clearInterval(appTimer.current);
             }
             setTime(timerSettings[activeSetting]);
+            tick.play();
           }}
         >
           {Icons.replay}
