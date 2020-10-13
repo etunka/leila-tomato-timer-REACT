@@ -16,25 +16,3 @@ export const TimerDisplay: FC<Props> = ({ time }) => {
     </div>
   );
 };
-
-// function createTimer(setting) {
-//   const duration = timerSettings[setting];
-//   // update time based on selected duration
-//   time = Number(duration);
-//   // we're setting current active setting of app when
-//   // new timer is created
-//   activeSetting = setting;
-//   // needs to stop any timer before creating a new one
-//   clearInterval(timerInterval);
-//   updateTimer();
-// }
-
-// function updateTimer() {
-//   document.getElementById("timer").innerHTML = `${padDuration(
-//     minutes()
-//   )}:${padDuration(seconds())}`;
-//   document.getElementById("title").innerHTML = `${padDuration(
-//     minutes()
-//   )}:${padDuration(seconds())}`;
-//   document.getElementById("done").classList.add("hidden");
-// }
