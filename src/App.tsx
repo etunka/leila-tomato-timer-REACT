@@ -85,7 +85,7 @@ function App() {
           onClick={() => {
             appTimer.current = setInterval(() => {
               setTime((currentTime) => currentTime - 1);
-            }, 1);
+            }, 1000);
             tick.play();
           }}
         >
