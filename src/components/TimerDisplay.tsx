@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { calculateMinutes, calculateSeconds, padDuration } from '../helper';
-import { timerSettings, tick, bell } from '../constant';
 
 type Props = {
   time: number;
