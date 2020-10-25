@@ -8,6 +8,7 @@ import { Log } from './components/Log';
 import { Usage } from './components/Usage';
 import { timerSettings, bell, tick, messages } from './constant';
 import * as Icons from './icons';
+import { showNotification } from './helper';
 
 // dark/light mode
 function getDefaultMode() {
@@ -39,6 +40,10 @@ function App() {
     if (appTimer.current && time === 0) {
       clearInterval(appTimer.current);
       bell.play();
+      // desktop notification
+      if (Notification.permission === "granted") {
+        showNotification();
+      }
     }
   }, [time]);
 
@@ -85,6 +90,7 @@ function App() {
               setTime((currentTime) => currentTime - 1);
             }, 1000);
             tick.play();
+            Notification.requestPermission();
           }}
         >
           {Icons.play}
