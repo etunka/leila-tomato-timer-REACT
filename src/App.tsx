@@ -86,11 +86,13 @@ function App() {
         <Button
           buttonClass={'controls__button'}
           onClick={() => {
-            appTimer.current = setInterval(() => {
-              setTime((currentTime) => currentTime - 1);
-            }, 1000);
-            tick.play();
-            Notification.requestPermission();
+            if (time > 0) {
+              appTimer.current = setInterval(() => {
+                setTime((currentTime) =>  currentTime - 1);
+              }, 1000);
+              tick.play();
+              Notification.requestPermission();
+            }
           }}
         >
           {Icons.play}
