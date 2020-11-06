@@ -8,7 +8,7 @@ import { Log } from './components/Log';
 import { Usage } from './components/Usage';
 import { timerSettings, bell, tick, messages } from './constant';
 import * as Icons from './icons';
-import { showNotification } from './helper';
+import { showNotification, calculateMinutes, calculateSeconds, padDuration } from './helper';
 
 // dark/light mode
 function getDefaultMode() {
@@ -47,6 +47,16 @@ function App() {
     }
   }, [time]);
 
+  // update app title
+  useEffect(() => {
+    if (appTimer.current) {
+
+      const minutes = padDuration(calculateMinutes(time)).toString();
+      const seconds = padDuration(calculateSeconds(time)).toString();
+      document.title = `${minutes}:${seconds}`
+    }
+  }, [time])
+
   // set dark/light mode
   useEffect(() => {
     if (mode === 'dark') {
@@ -78,6 +88,7 @@ function App() {
           onClick={() => {
             if (appTimer.current) {
               clearInterval(appTimer.current);
+              appTimer.current = null;
             }
           }}
         >
@@ -86,11 +97,12 @@ function App() {
         <Button
           buttonClass={'controls__button'}
           onClick={() => {
-            if (time > 0) {
+            if (!appTimer.current && time > 0) {
               appTimer.current = setInterval(() => {
                 setTime((currentTime) =>  currentTime - 1);
               }, 1000);
               tick.play();
+
               Notification.requestPermission();
             }
           }}
