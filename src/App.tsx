@@ -88,7 +88,6 @@ function App() {
           onClick={() => {
             if (appTimer.current) {
               clearInterval(appTimer.current);
-              appTimer.current = null;
             }
           }}
         >
@@ -97,7 +96,7 @@ function App() {
         <Button
           buttonClass={'controls__button'}
           onClick={() => {
-            if (!appTimer.current && time > 0) {
+            if (time > 0) {
               appTimer.current = setInterval(() => {
                 setTime((currentTime) =>  currentTime - 1);
               }, 1000);
@@ -124,20 +123,35 @@ function App() {
       <div className='durations'>
         <Button
           buttonClass={'durations__button'}
-          onClick={() => setActiveSetting('focus')}
+          onClick={() => {
+            setActiveSetting('focus');
+            if (appTimer.current) {
+              clearInterval(appTimer.current);
+            }
+        }}
         >
           Focus
         </Button>
         <div className='durations__breaks'>
           <Button
             buttonClass={'durations__button'}
-            onClick={() => setActiveSetting('shortBreak')}
+            onClick={() => {
+              setActiveSetting('shortBreak');
+              if (appTimer.current) {
+                clearInterval(appTimer.current);
+              }
+          }}
           >
             Short break
           </Button>
           <Button
             buttonClass={'durations__button'}
-            onClick={() => setActiveSetting('longBreak')}
+            onClick={() => {
+              setActiveSetting('longBreak');
+              if (appTimer.current) {
+                clearInterval(appTimer.current);
+              }
+            }}
           >
             Long break
           </Button>
