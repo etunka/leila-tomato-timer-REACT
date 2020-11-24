@@ -1,19 +1,24 @@
-import React, { useEffect, useRef, useState } from 'react';
-import './main.scss';
-import { TimerDisplay } from './components/TimerDisplay';
-import { Logo } from './components/Logo';
-import { Button } from './components/Button';
-import logoImageUrl from './images/tomato-logo.png';
-import { Log } from './components/Log';
-import { Usage } from './components/Usage';
-import { timerSettings, bell, tick, messages } from './constant';
-import * as Icons from './icons';
-import { showNotification, calculateMinutes, calculateSeconds, padDuration } from './helper';
+import React, { useEffect, useRef, useState } from "react";
+import "./main.scss";
+import { TimerDisplay } from "./components/TimerDisplay";
+import { Logo } from "./components/Logo";
+import { Button } from "./components/Button";
+import logoImageUrl from "./images/tomato-logo.png";
+import { Log } from "./components/Log";
+import { Usage } from "./components/Usage";
+import { timerSettings, bell, tick, messages } from "./constant";
+import * as Icons from "./icons";
+import {
+  showNotification,
+  calculateMinutes,
+  calculateSeconds,
+  padDuration,
+} from "./helper";
 
 // dark/light mode
 function getDefaultMode() {
-  const savedMode = localStorage.getItem('mode');
-  return savedMode ? savedMode : 'light';
+  const savedMode = localStorage.getItem("mode");
+  return savedMode ? savedMode : "light";
 }
 
 function App() {
@@ -21,8 +26,13 @@ function App() {
 
   // default duration is focus
   const [activeSetting, setActiveSetting] = useState<
-    'focus' | 'longBreak' | 'shortBreak'
-  >('focus');
+    "focus" | "longBreak" | "shortBreak"
+  >("focus");
+
+  // extra trigger for the case when activeSetting does not change but needs to be set again
+  const [activeSettingUpdatedAt, setActiveSettingUpdatedAt] = useState(
+    new Date()
+  );
 
   const [time, setTime] = useState(timerSettings[activeSetting]);
 
@@ -32,7 +42,7 @@ function App() {
   // set timer display
   useEffect(() => {
     setTime(timerSettings[activeSetting]);
-  }, [activeSetting]);
+  }, [activeSetting, activeSettingUpdatedAt]);
 
   // when time is up, clear the timer
   useEffect(() => {
@@ -50,41 +60,40 @@ function App() {
   // update app title
   useEffect(() => {
     if (appTimer.current) {
-
       const minutes = padDuration(calculateMinutes(time)).toString();
       const seconds = padDuration(calculateSeconds(time)).toString();
-      document.title = `${minutes}:${seconds}`
+      document.title = `${minutes}:${seconds}`;
     }
-  }, [time])
+  }, [time]);
 
   // set dark/light mode
   useEffect(() => {
-    if (mode === 'dark') {
-      document.body.classList.add('dark');
+    if (mode === "dark") {
+      document.body.classList.add("dark");
     } else {
-      document.body.classList.remove('dark');
+      document.body.classList.remove("dark");
     }
-    localStorage.setItem('mode', mode);
+    localStorage.setItem("mode", mode);
   }, [mode]);
 
   return (
-    <div className='container'>
+    <div className="container">
       <span
-        className='mode'
-        onClick={() => setMode(mode === 'dark' ? 'light' : 'dark')}
+        className="mode"
+        onClick={() => setMode(mode === "dark" ? "light" : "dark")}
       >
-        {mode === 'dark' ? 'Light mode' : 'Dark mode'}
+        {mode === "dark" ? "Light mode" : "Dark mode"}
       </span>
       <Logo
         imageUrl={logoImageUrl}
-        altText={'tomato logo'}
-        logoText={'Leila Tomato Timer'}
+        altText={"tomato logo"}
+        logoText={"Leila Tomato Timer"}
       />
       <TimerDisplay time={time} />
-      {time === 0 && <div className='message'>{messages[activeSetting]}</div>}
-      <div className='controls'>
+      {time === 0 && <div className="message">{messages[activeSetting]}</div>}
+      <div className="controls">
         <Button
-          buttonClass={'controls__button'}
+          buttonClass={"controls__button"}
           onClick={() => {
             if (appTimer.current) {
               clearInterval(appTimer.current);
@@ -94,11 +103,14 @@ function App() {
           {Icons.pause}
         </Button>
         <Button
-          buttonClass={'controls__button'}
+          buttonClass={"controls__button"}
           onClick={() => {
+            if (appTimer.current) {
+              clearInterval(appTimer.current);
+            }
             if (time > 0) {
               appTimer.current = setInterval(() => {
-                setTime((currentTime) =>  currentTime - 1);
+                setTime((currentTime) => currentTime - 1);
               }, 1000);
               tick.play();
 
@@ -109,7 +121,7 @@ function App() {
           {Icons.play}
         </Button>
         <Button
-          buttonClass={'controls__button'}
+          buttonClass={"controls__button"}
           onClick={() => {
             if (appTimer.current) {
               clearInterval(appTimer.current);
@@ -120,34 +132,37 @@ function App() {
           {Icons.replay}
         </Button>
       </div>
-      <div className='durations'>
+      <div className="durations">
         <Button
-          buttonClass={'durations__button'}
+          buttonClass={"durations__button"}
           onClick={() => {
-            setActiveSetting('focus');
+            setActiveSetting("focus");
+            setActiveSettingUpdatedAt(new Date());
             if (appTimer.current) {
               clearInterval(appTimer.current);
             }
-        }}
+          }}
         >
           Focus
         </Button>
-        <div className='durations__breaks'>
+        <div className="durations__breaks">
           <Button
-            buttonClass={'durations__button'}
+            buttonClass={"durations__button"}
             onClick={() => {
-              setActiveSetting('shortBreak');
+              setActiveSetting("shortBreak");
+              setActiveSettingUpdatedAt(new Date());
               if (appTimer.current) {
                 clearInterval(appTimer.current);
               }
-          }}
+            }}
           >
             Short break
           </Button>
           <Button
-            buttonClass={'durations__button'}
+            buttonClass={"durations__button"}
             onClick={() => {
-              setActiveSetting('longBreak');
+              setActiveSetting("longBreak");
+              setActiveSettingUpdatedAt(new Date());
               if (appTimer.current) {
                 clearInterval(appTimer.current);
               }
